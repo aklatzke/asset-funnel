@@ -1,0 +1,14 @@
+{
+    "name": "aklatzke/asset-funnel",
+    "description": "Auto bundler for all requested assets on a per-page basis.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andrew Klatzke",
+            "email": "andrew@klatzke.com"
+        }
+    ],
+    "require": {
+        "josegonzalez/dotenv": "^1.2"
+    }
+}
