@@ -10,5 +10,10 @@
     ],
     "require": {
         "josegonzalez/dotenv": "^1.2"
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Aklatzke\\Funnel" : "src"
+        }
     }
 }

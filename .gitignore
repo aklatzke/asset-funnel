@@ -1,3 +1,6 @@
 /vendor/
 .env
 index.php
+storage/
+!storage/.gitkeep
+src/public/
