@@ -18,11 +18,27 @@ class Funnel{
 
   public function __construct( $outputType, $dryRun = 0 )
   {
-    $this->storagePath = $_ENV['FUNNEL_STORAGE_PATH'];
+    // The check for instantiated ENVs will need to happen twice
+    // throughout this instances lifetime.
+    $this->load();
+
     $this->outputType = $outputType;
 
     if( $dryRun === 1 )
       $this->isDry = true;
+  }
+  /**
+   * Used as an alternate way to load the storagePath members in
+   * case this needs to be instantiated before .env is defined.
+   *
+   * Instead, it will be loaded on any attempt to bundle the assets.
+   */
+  private function load(  )
+  {
+    $envExists = isset($_ENV['FUNNEL_STORAGE_PATH']) || getenv('FUNNEL_STORAGE_PATH');
+
+    if( ! $this->storagePath && $envExists )
+      $this->storagePath = isset($_ENV['FUNNEL_STORAGE_PATH']) ? $_ENV['FUNNEL_STORAGE_PATH'] : getenv('FUNNEL_STORAGE_PATH');
   }
 
   public function addExternal( $uri )
@@ -39,8 +55,20 @@ class Funnel{
     $this->registered []= [ $path, 'local' ];
   }
 
+  public function string( $str )
+  {
+    $this->currentHash = $this->currentHash . md5($str);
+
+    $this->registered []= [ $str, 'string' ];
+  }
+
   public function bundle( $basePath = '' )
   {
+    // it's possible the ENV vars were loaded to the global array
+    // after our initial creation of this instance (through, for example,
+    // a dotenv loader).
+    $this->load();
+
     $this->currentHash = md5($this->currentHash);
 
     $fullPath = $basePath . $this->storagePath . $this->currentHash . $this->outputType;
@@ -52,7 +80,10 @@ class Funnel{
     $contents = '';
 
     foreach ($this->registered as $index => $script)
-      $contents .= file_get_contents( $script[0] );
+      if( $script[1] === 'string' )
+        $contents .= $contents;
+      else
+        $contents .= file_get_contents( $script[0] );
 
     if( $this->isDry )
       return $contents;
