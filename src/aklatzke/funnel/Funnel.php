@@ -51,6 +51,15 @@ class Funnel{
   public function add( $path )
   {
     $this->currentHash = $this->currentHash . $path;
+    // deal with query parameters. this will be cached the same way as the others
+    // due to the query parameter being appended to the hash
+    if( strpos($path, "?") !== -1 )
+    {
+      $temp = explode("?", $path);
+      // get everything before the query param
+      $path = $temp[0];
+    }
+
 
     $this->registered []= [ $path, 'local' ];
   }
