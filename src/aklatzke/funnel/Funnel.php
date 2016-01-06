@@ -83,7 +83,7 @@ class Funnel{
     $fullPath = $basePath . $this->storagePath . $this->currentHash . $this->outputType;
     $this->fullPath = "http://" . $_SERVER['HTTP_HOST'] . $this->storagePath . $this->currentHash . $this->outputType;
 
-    if( file_exists( $fullPath ) )
+    if( file_exists( $fullPath ) && ! $this->isDry )
       return file_get_contents( $fullPath );
 
     $contents = '';
