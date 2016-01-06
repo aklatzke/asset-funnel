@@ -1,7 +1,7 @@
 #### aklatzke/asset-funnel
 ----
 
-A tiny and flexible asset minifier and cache for CSS and Javascript.
+A tiny and flexible asset loader with a built in cache.
 
 ####Installation
 
