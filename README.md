@@ -39,7 +39,7 @@ Next, create an instance of the funnel, with the specified output file type:
 
 `$cssFunnel = ( new Funnel('.css') );`
 
-You may want to load the classes into a service container so that you have access to them throughout your application in order to add assets from multiple pages (to, for example, add scripts in individual partials or pages). You should refer to your individual container's documentation, just remember to create it as a singletonn.
+You may want to load the classes into a service container so that you have access to them throughout your application in order to add assets from multiple pages (to, for example, add scripts in individual partials or pages). You should refer to your individual container's documentation, just remember to create it as a singleton.
 
 -- 
 ####Adding Assets
