@@ -55,6 +55,9 @@ Adding external resources:
 
 External resources are downloaded automatically, meaning that once the cache file is built, you will no longer have to send an HTTP request for that file.
 
+You may also add arbitrary strings:
+`$requestLog->add('Remote IP: ' . $_SERVER['REMOTE_ADDR']);`
+
 --
 ####Loading Resources
 
@@ -82,6 +85,49 @@ If that's not your style, you can also get the file path and drop it into a tag:
   <script type="text/javascript" src="<?php echo $jsPath; ?>"></script>
 </body>
 ```
+The files will now be cached as long a the file names remain consistent.
+
+--
+####Cache Busting
+
+If you are in a development environment, you can run the bundle as a "dry run" that will continue to download the files rather than referencing the cached version:
+```php
+use Aklatzke\Funnel\Funnel;
+$funnel = ( new Funnel('.json', Funnel::DRY_RUN) );
+```
+When on a live server, you can add a query parameter:
+```php
+$funnel->add('data-1.json?v=1.0.1');
+```
+External libraries will be redownloaded if their version number changes. 
+
+You may also repurpose the `string` method to invalidate the cache:
+```php
+$funnel->string('// Version 1.0.1');
+$funnel->add('index.js');
+```
+Simply update the version number in the `string` method which will cause the library to read the files and refresh the cache. This is an effective way to version the cached files as you can revert the string version and the previous file will be referenced.
+
+#### Uses
+- Log files `(new Funnel('.log'))->string('Some log statment');`
+- CSS `(new Funnel('.css'))->add('arbitrary.css')->add('arbitrary2.css')->bundle()`;
+- JS `(new Funnel('.css'))->add('arbitrary.js')->add('arbitrary2.js')->bundle()`;
+- Configuration files
+- Dynamic pages `require( (new Funnel('.php'))->add('header.htm')->add('requested-page.htm')->add('footer.htm')->bundle()->getPath() )`;
+
+#### Coming Soon
+- Tests
+- File delimiters (to, for example, pass a ';' before each javascript file)
+
+#### Contribute
+
+I'm open to PRs for functionality that is tightly coupled to the current focus of the library or that extends it's usefulness to other file types.
+
+
+
+
+
+
 
 
 
