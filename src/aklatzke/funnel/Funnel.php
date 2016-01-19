@@ -90,7 +90,7 @@ class Funnel{
 
     foreach ($this->registered as $index => $script)
       if( $script[1] === 'string' )
-        $contents .= $contents;
+        $contents .= $script[0];
       else
         $contents .= file_get_contents( $script[0] );
 
